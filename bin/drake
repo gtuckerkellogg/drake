@@ -1,7 +1,21 @@
 #!/bin/bash
 # Runs Drake without Nailgun (needs an uberjar)
-DRAKE_HOME=$(dirname $(dirname $0))
-DRAKE_JAR=$DRAKE_HOME/target/drake.jar
+# resolve links - $0 may be a soft-link
+PRG="$0"
+
+while [ -h "$PRG" ] ; do
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+        PRG="$link"
+    else
+        PRG=`dirname "$PRG"`/"$link"
+    fi
+done
+
+DRAKE_HOME=`dirname "$PRG"`
+
+DRAKE_JAR=$DRAKE_HOME/../target/drake.jar
 
 if [[ ! -f $DRAKE_JAR ]]; then
   echo "========= UBERJAR COMPILING ========="
